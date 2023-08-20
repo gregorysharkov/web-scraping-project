@@ -7,3 +7,5 @@ HEADER = {
 CONTAINER_CLASS_NAME = 'results-list-submodule results-list-submodule--type-news-and-insights'
 WEBSITE_NAME = 'eaton.com'
 OUTPUT_PATH = Path().parent / 'scraped_data'
+
+N_ARTICLES = 10
