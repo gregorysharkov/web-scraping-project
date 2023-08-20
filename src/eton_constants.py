@@ -11,5 +11,5 @@ SCRAPER_INIT_ARGS = {
     'search_result_container_name': 'results-list-submodule results-list-submodule--type-news-and-insights',
 }
 
-OUTPUT_PATH = Path().parent / 'scraped_data'
+OUTPUT_PATH = Path() / 'scraped_data'
 N_ARTICLES = 10

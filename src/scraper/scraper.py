@@ -7,8 +7,8 @@ from typing import Any, Dict, List, Tuple
 import bs4
 from tqdm import tqdm
 
-from article import Article
-from request_utils import get_page_content
+from src.article import Article
+from src.request_utils import get_page_content
 
 logger = logging.getLogger(__name__)
 

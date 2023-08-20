@@ -3,8 +3,8 @@ from typing import List
 
 import bs4
 
-from parsing_utils import error_on_attribute_error
-from request_utils import get_page_content
+from src.parsing_utils import error_on_attribute_error
+from src.request_utils import get_page_content
 
 from .scraper import Scraper
 

@@ -1,9 +1,10 @@
 '''main module interface'''
+from typing import Any, Dict
 
-import eton_constants as ecn
-import reuters_constants as rcn
-from scraper.eton_scraper import EtonScraper  # type: ignore
-from scraper.reuters_scraper import ReutersScraper
+import src.eton_constants as ecn
+import src.reuters_constants as rcn
+from src.scraper.eton_scraper import EtonScraper  # type: ignore
+from src.scraper.reuters_scraper import ReutersScraper
 
 
 def scrape_eton() -> None:
@@ -35,6 +36,12 @@ def scrape_reuters() -> None:
         item.save(rcn.OUTPUT_PATH)
 
 
+def load_settings(scraper_type: str) -> Dict[str, Any]:
+    '''function loads all settings from the configuration yml'''
+    # TODO: blueprint of a settings loader function
+    pass
+
+
 if __name__ == '__main__':
     scrape_reuters()
-    # scrape_eton()
+    scrape_eton()

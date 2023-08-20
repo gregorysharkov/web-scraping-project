@@ -3,9 +3,9 @@ from typing import List
 
 import bs4
 
-from parsing_utils import error_on_attribute_error
-from request_utils import get_page_content
-from scraper.scraper import Scraper
+from src.parsing_utils import error_on_attribute_error
+from src.request_utils import get_page_content
+from src.scraper.scraper import Scraper
 
 
 class EtonScraper(Scraper):
