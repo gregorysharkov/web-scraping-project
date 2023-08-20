@@ -4,6 +4,8 @@ from typing import Dict, List, Tuple
 import bs4 as bs4
 import requests
 
+from article import Article
+
 BASE_URL = 'https://www.eaton.com/us/en-us/company/news-insights/news-releases.html'
 HEADER = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0'
@@ -58,7 +60,7 @@ def extract_article_information(element: bs4.element.Tag) -> Tuple[str, str]:
         tuple containing title, link and the article text
     '''
 
-    title = f'{WEBSITE_NAME} - {get_title(element)}'
+    title = get_title(element)
     link = get_article_link(element)
     article_text = get_article_text(link, HEADER)
 
@@ -119,20 +121,12 @@ def get_article_text(link: str, header: Dict) -> str:
     return f'source: {link}' + article_content.text
 
 
-def save_article(article_name: str, article_text: str, output_path: Path = OUTPUT_PATH) -> None:
-    '''saves given article in the given path'''
-
-    file_name = output_path / f'{article_name}.txt'
-    with open(file_name, 'w', encoding='utf-8') as file:
-        file.write(article_text)
-
-
 if __name__ == '__main__':
 
     page_content = get_page_content(BASE_URL, header=HEADER)
     articles = get_search_results(page_content, CONTAINER_CLASS_NAME)
     extracted_articles = []
     for item in articles[:2]:
-        save_article(*extract_article_information(item))
-
-    # print(extracted_articles)
+        article = Article(*extract_article_information(item), WEBSITE_NAME)
+        extracted_articles.append(article)
+        article.save(OUTPUT_PATH)
