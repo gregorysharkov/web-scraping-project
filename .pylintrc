@@ -1,0 +1,4 @@
+[FORMAT]
+
+max-line-length = 120  # Adjust this value to your preferred maximum line length
+disable=C0301,E0401,E0611

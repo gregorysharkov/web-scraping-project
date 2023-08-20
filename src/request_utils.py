@@ -1,3 +1,5 @@
+'''helper functions to make requests'''
+
 from typing import Dict
 
 import requests

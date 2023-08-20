@@ -1,3 +1,6 @@
+'''parsing helper functions'''
+
+
 def error_on_attribute_error(error_string):
     '''
     decorartor that intercepts attribute error when calling a function

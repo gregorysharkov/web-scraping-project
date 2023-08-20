@@ -1,3 +1,4 @@
+'''scraper used to get and parse eton data'''
 from typing import List
 
 import bs4

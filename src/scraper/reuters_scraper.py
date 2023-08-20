@@ -1,3 +1,4 @@
+'''scraper used to get and parse reuters data'''
 from typing import List
 
 import bs4
@@ -6,19 +7,6 @@ from parsing_utils import error_on_attribute_error
 from request_utils import get_page_content
 
 from .scraper import Scraper
-
-H3_CLASS = 'text__text__1FZLe ' +\
-           'text__dark-grey__3Ml43 ' +\
-           'text__medium__1kbOh ' +\
-           'text__heading_6__1qUJ5 ' +\
-           'heading__base__2T28j ' +\
-           'heading__heading_6__RtD9P'
-A_CLASS = 'text__text__1FZLe ' +\
-          'text__dark-grey__3Ml43 ' +\
-          'text__inherit-font__1Y8w3 ' +\
-          'text__inherit-size__1DZJi ' +\
-          'link__underline_on_hover__2zGL4 ' +\
-          'media-story-card__heading__eqhp9'
 
 
 class ReutersScraper(Scraper):
@@ -33,6 +21,7 @@ class ReutersScraper(Scraper):
 
     @property
     def base_url(self) -> str:
+        '''constructs base url from background and search urls'''
         return self.background_url + self.search_url
 
     def _get_article_url(self, href: str) -> str:
@@ -54,18 +43,18 @@ class ReutersScraper(Scraper):
     def _get_title(self, element: bs4.element.Tag) -> str:
         '''gets title text from a given element'''
 
-        item_container = element.find('div')
-        item_type = item_container.get('data-testid')
+        item_container = element.find('div')  # type: Tag
+        item_type = item_container.get('data-testid')  # type: ignore
 
         if item_type == 'MediaStoryCard':
             return item_container\
                 .find('div')\
                 .find('h3')\
-                .text
+                .text  # type: ignore
 
         elif item_type == 'TextStoryCard':
             return item_container\
-                .find('a')\
+                .find_all('a')[1]\
                 .text
 
         raise AttributeError()
@@ -74,7 +63,7 @@ class ReutersScraper(Scraper):
     def _get_article_link(self, element: bs4.element.Tag) -> str:
         '''gets article url from a given element'''
 
-        item_container = element.find('div')
+        item_container = element.find('div')  # type: Tag
         item_type = item_container.get('data-testid')
 
         if item_type == 'MediaStoryCard':
@@ -86,7 +75,7 @@ class ReutersScraper(Scraper):
 
         elif item_type == 'TextStoryCard':
             return item_container\
-                .find('a')\
+                .find_all('a')[1]\
                 .get('href')  # type: ignore
 
         raise AttributeError()

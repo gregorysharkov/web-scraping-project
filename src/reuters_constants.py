@@ -1,3 +1,4 @@
+'''settings of the reuters scraper'''
 from pathlib import Path
 
 SCRAPER_INIT_ARGS = {

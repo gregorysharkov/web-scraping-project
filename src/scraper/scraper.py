@@ -1,10 +1,16 @@
+'''bqse scraper class'''
+
+import logging
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Tuple
 
 import bs4
+from tqdm import tqdm
 
 from article import Article
 from request_utils import get_page_content
+
+logger = logging.getLogger(__name__)
 
 
 class Scraper(ABC):
@@ -26,31 +32,40 @@ class Scraper(ABC):
     header: Dict[str, Any]
     page_content: str
     search_result_container_name: str
+    num_articles: int
 
     def __init__(self, **kwargs) -> None:
         super().__init__()
         self.__dict__.update(kwargs)
+        logger.debug('Loger initialized')
 
     # TODO: add dynamic loading
+    # solution should be either to use selenium or scrappy + Splash
+    # so far for 10 lines the code is complex enough
     def fetch_content(self) -> None:
         '''extracts content from a given page'''
+
+        logger.debug('fetching content from the page')
         self.page_content = get_page_content(self.base_url, self.header)
+        logger.debug('done fetching content from the page')
 
     def get_articles(self) -> List[Article]:
         '''
         function parses the list of articles extracted from the base url
         and returns the list of Article objects
         '''
+        logger.debug('Retrieving article information')
         raw_articles = self._get_search_results()
 
         article_list = []
-        for article in raw_articles:
+        for article in tqdm(raw_articles[:min(self.num_articles, len(raw_articles))]):
             article_title, article_content = self._extract_article_information(
                 article)
             article_list.append(
                 Article(article_title, article_content, self.site_name)
             )
 
+        logger.debug('Done retrieving article information')
         return article_list
 
     @abstractmethod
