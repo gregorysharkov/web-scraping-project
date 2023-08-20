@@ -4,6 +4,7 @@ source: https://www.eaton.com/us/en-us/company/news-insights/news-releases/2023/
 
 
 
+
 Eaton launches smart ambient monitoring API; new application of smart breaker data to inform caregiving in congregate and remote healthcare environments
 
 
