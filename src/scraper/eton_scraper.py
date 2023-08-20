@@ -8,10 +8,11 @@ from scraper.scraper import Scraper
 
 
 class EtonScraper(Scraper):
+    '''implementation of scraping logic for eaton.com'''
 
-    def _get_search_results(self, search_results_container: str) -> List[bs4.element.Tag]:
+    def _get_search_results(self) -> List[bs4.element.Tag]:
         if not self.page_content:
-            return None
+            return None  # type: ignore
 
         soup = bs4.BeautifulSoup(self.page_content, 'html.parser')
         found_items = soup.find_all(
@@ -70,4 +71,4 @@ class EtonScraper(Scraper):
                 class_='responsivegrid aem-GridColumn aem-GridColumn--default--12'
             )
 
-        return f'source: {link}' + article_content.text
+        return f'source: {link}\n' + article_content.text

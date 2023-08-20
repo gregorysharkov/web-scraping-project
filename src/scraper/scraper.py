@@ -41,8 +41,7 @@ class Scraper(ABC):
         function parses the list of articles extracted from the base url
         and returns the list of Article objects
         '''
-        raw_articles = self._get_search_results(
-            self.search_result_container_name)
+        raw_articles = self._get_search_results()
 
         article_list = []
         for article in raw_articles:
@@ -55,7 +54,7 @@ class Scraper(ABC):
         return article_list
 
     @abstractmethod
-    def _get_search_results(self, search_results_container: str) -> List[bs4.element.Tag]:
+    def _get_search_results(self) -> List[bs4.element.Tag]:
         pass
 
     def _extract_article_information(self, element: bs4.element.Tag) -> Tuple[str, str]:
