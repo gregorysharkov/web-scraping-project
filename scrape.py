@@ -1,5 +1,8 @@
 '''main module interface'''
+from pathlib import Path
 from typing import Any, Dict
+
+import yaml
 
 import src.eton_constants as ecn
 import src.reuters_constants as rcn
@@ -7,41 +10,65 @@ from src.scraper.eton_scraper import EtonScraper  # type: ignore
 from src.scraper.reuters_scraper import ReutersScraper
 
 
-def scrape_eton() -> None:
+def scrape_eton(settings: Dict) -> None:
     '''scrape eton.com data'''
     eton_scraper = EtonScraper(
-        **ecn.SCRAPER_INIT_ARGS,
-        num_articles=ecn.N_ARTICLES,
-    )
-
-    eton_scraper.fetch_content()
-    articles = eton_scraper.get_articles()
-
-    for item in articles[:ecn.N_ARTICLES]:
-        item.save(ecn.OUTPUT_PATH)
-
-
-def scrape_reuters() -> None:
-    '''scrape reuters.com data'''
-
-    eton_scraper = ReutersScraper(
-        **rcn.SCRAPER_INIT_ARGS,
-        num_articles=ecn.N_ARTICLES,
+        **settings.get('init_args'),  # type: ignore
+        num_articles=settings.get('num_articles'),
     )
 
     eton_scraper.fetch_content()
     articles = eton_scraper.get_articles()
 
     for item in articles:
+        item.save(ecn.OUTPUT_PATH)
+
+
+def scrape_reuters(settings: Dict) -> None:
+    '''scrape reuters.com data'''
+
+    reuters_scraper = ReutersScraper(
+        **settings.get('init_args'),  # type: ignore
+        num_articles=settings.get('num_articles'),
+    )
+
+    reuters_scraper.fetch_content()
+    articles = reuters_scraper.get_articles()
+
+    for item in articles:
         item.save(rcn.OUTPUT_PATH)
 
 
-def load_settings(scraper_type: str) -> Dict[str, Any]:
+SETTINGS_PATH = Path() / 'conf/scraper_settings.yml'
+
+
+def load_settings(path: Path) -> Dict[str, Any]:
     '''function loads all settings from the configuration yml'''
-    # TODO: blueprint of a settings loader function
-    pass
+
+    with open(path, 'r') as file:
+        settings_dict = yaml.safe_load(file)
+
+    return settings_dict
+
+
+def load_specific_settings(settings_type: str, path: Path = SETTINGS_PATH) -> Dict[str, Any]:
+    '''loads settings specific to the provided settings type'''
+
+    global_settings = load_settings(path)
+
+    assert settings_type in global_settings.get(
+        'scraper_itit_settings')  # type: ignore
+
+    init_settings = global_settings.get(
+        'scraper_itit_settings').get(settings_type)
+    del global_settings['scraper_itit_settings']
+
+    return {
+        'init_args': init_settings,
+        **global_settings
+    }
 
 
 if __name__ == '__main__':
-    scrape_reuters()
-    scrape_eton()
+    scrape_reuters(settings=load_specific_settings('reuters'))
+    scrape_eton(settings=load_specific_settings('eton'))
