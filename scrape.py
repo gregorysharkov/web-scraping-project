@@ -4,7 +4,7 @@ from typing import Any, Dict
 
 import yaml
 
-import constants as cn
+import src.constants as cn
 from src.scraper.eton_scraper import EtonScraper  # type: ignore
 from src.scraper.reuters_scraper import ReutersScraper
 
