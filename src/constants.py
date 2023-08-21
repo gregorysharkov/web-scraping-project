@@ -1,6 +1,6 @@
 '''eton scraper contants'''
 
-from pathlib import Path
+from pathlib import Path  # pragma: nocover
 
-OUTPUT_PATH = Path() / 'scraped_data'
-SETTINGS_PATH = Path() / 'conf/scraper_settings.yml'
+OUTPUT_PATH = Path() / 'scraped_data'  # pragma: nocover
+SETTINGS_PATH = Path() / 'conf/scraper_settings.yml'  # pragma: nocover

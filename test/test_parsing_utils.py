@@ -1,4 +1,4 @@
-import pytest
+# pylint: disable=C0114, W0613, C0116, C0115
 
 from src.parsing_utils import error_on_attribute_error
 
