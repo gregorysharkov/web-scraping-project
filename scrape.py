@@ -38,9 +38,6 @@ def scrape_reuters(settings: Dict) -> None:
         item.save(cn.OUTPUT_PATH)
 
 
-SETTINGS_PATH = Path() / 'conf/scraper_settings.yml'
-
-
 def load_settings(path: Path) -> Dict[str, Any]:
     '''function loads all settings from the configuration yml'''
 
@@ -50,7 +47,7 @@ def load_settings(path: Path) -> Dict[str, Any]:
     return settings_dict
 
 
-def load_specific_settings(settings_type: str, path: Path = SETTINGS_PATH) -> Dict[str, Any]:
+def load_specific_settings(settings_type: str, path: Path = cn.SETTINGS_PATH) -> Dict[str, Any]:
     '''loads settings specific to the provided settings type'''
 
     global_settings = load_settings(path)
