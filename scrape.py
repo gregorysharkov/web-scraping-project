@@ -4,8 +4,7 @@ from typing import Any, Dict
 
 import yaml
 
-import src.eton_constants as ecn
-import src.reuters_constants as rcn
+import constants as cn
 from src.scraper.eton_scraper import EtonScraper  # type: ignore
 from src.scraper.reuters_scraper import ReutersScraper
 
@@ -21,7 +20,7 @@ def scrape_eton(settings: Dict) -> None:
     articles = eton_scraper.get_articles()
 
     for item in articles:
-        item.save(ecn.OUTPUT_PATH)
+        item.save(cn.OUTPUT_PATH)
 
 
 def scrape_reuters(settings: Dict) -> None:
@@ -36,7 +35,7 @@ def scrape_reuters(settings: Dict) -> None:
     articles = reuters_scraper.get_articles()
 
     for item in articles:
-        item.save(rcn.OUTPUT_PATH)
+        item.save(cn.OUTPUT_PATH)
 
 
 SETTINGS_PATH = Path() / 'conf/scraper_settings.yml'
