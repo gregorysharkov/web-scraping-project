@@ -69,7 +69,7 @@ class Scraper(ABC):
         return article_list
 
     @abstractmethod
-    def _get_search_results(self) -> List[bs4.element.Tag]:
+    def _get_search_results(self) -> List[bs4.element.Tag]:  # pragma: nocover
         pass
 
     def _extract_article_information(self, element: bs4.element.Tag) -> Tuple[str, str]:
@@ -81,13 +81,13 @@ class Scraper(ABC):
         return title, article_text
 
     @abstractmethod
-    def _get_title(self, element: bs4.element.Tag) -> str:
+    def _get_title(self, element: bs4.element.Tag) -> str:  # pragma: nocover
         pass
 
     @abstractmethod
-    def _get_article_link(self, element: bs4.element.Tag) -> str:
+    def _get_article_link(self, element: bs4.element.Tag) -> str:  # pragma: nocover
         pass
 
     @abstractmethod
-    def _get_article_text(self, link: str) -> str:
+    def _get_article_text(self, link: str) -> str:  # pragma: nocover
         pass
