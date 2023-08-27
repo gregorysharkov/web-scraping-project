@@ -70,3 +70,16 @@ def mock_eton_get_page_content(monkeypatch):
 
     monkeypatch.setattr(
         "src.get_page_content", eaton_mock_get_content)
+
+
+@pytest.fixture
+def mock_article_content():
+    return '''
+        <div class="root responsivegrid">
+            <div class="aem-Grid aem-Grid--12 aem-Grid--default--12">
+                <div class="responsivegrid aem-GridColumn aem-GridColumn--default--12">
+                    Mocked page content
+                </div>
+            </div>
+        </div>
+        '''

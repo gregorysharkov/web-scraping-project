@@ -1,8 +1,7 @@
-from unittest.mock import MagicMock
-
-import pytest
 from bs4 import BeautifulSoup
+from pytest import MonkeyPatch
 
+from src.request_utils import convert_content_into_soup
 from src.scraper.eton_scraper import EtonScraper
 
 
@@ -15,8 +14,11 @@ class MockEtonScraper(EtonScraper):
     num_articles = 5
 
     def _get_search_results(self):
-        return [BeautifulSoup(f'<div class="article-{i}">Article {i}</div>', 'html.parser')
-                for i in range(1, 6)]
+        return [
+            BeautifulSoup(
+                f'<div class="article-{i}">Article {i}</div>', 'html.parser'
+            ) for i in range(1, 6)
+        ]
 
 
 def test_etonscraper_get_search_results():
@@ -48,3 +50,24 @@ def test_etonscraper_get_article_link():
 #     article_text = scraper._get_article_text('http://mock.com/article')
 #     assert 'source: http://mock.com/article' in article_text
 #     assert 'Mocked page content' in article_text
+
+
+def test_eton_scraper_get_article_text(mock_article_content: str):
+    class MockArticleEtonScraper(MockEtonScraper):
+        def _get_article_content(self, link) -> BeautifulSoup:
+            return convert_content_into_soup(mock_article_content)
+
+    scraper = MockArticleEtonScraper()
+    article_text = scraper._get_article_text('http://mock.com/article')
+    assert 'source: http://mock.com/article' in article_text
+    assert 'Mocked page content' in article_text
+
+
+def test_eton_scraper_get_article_content(monkeypatch: MonkeyPatch, mock_article_content: str):
+    monkeypatch.setattr('src.request_utils.get_page_content',
+                        lambda url, header: mock_article_content)
+    from src.scraper.eton_scraper import EtonScraper
+
+    scraper = EtonScraper(header={})
+    article_soup = scraper._get_article_content('https://some_link')
+    print(repr(article_soup))

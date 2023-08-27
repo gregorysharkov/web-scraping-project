@@ -1,16 +1,13 @@
 '''bqse scraper class'''
 
-import logging
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 import bs4
 from tqdm import tqdm
 
 from src.article import Article
 from src.request_utils import get_page_content
-
-logger = logging.getLogger(__name__)
 
 
 class Scraper(ABC):
@@ -20,12 +17,17 @@ class Scraper(ABC):
         * fetch content
         * parse content into a list of articles
 
-
     Each inheritent class should redefine:
         * how to get a list of search results (_get_search_results)
-        * how to get title of each article (_get_title)
         * how to get a link to the article (_get_article_link)
-        * how to get a text of the article (_get_article_text using the article link)
+        * which class should be instantiated to parse a single article
+
+    the usage logic is the following:
+        1. fetch content
+        2. call get_articles, that will:
+            a. find search_results in the content
+            b. for each result use the appropriate article scraper to create and article
+            c. return a list of instantiated articles
     '''
     site_name: str
     base_url: str
@@ -37,7 +39,13 @@ class Scraper(ABC):
     def __init__(self, **kwargs) -> None:
         super().__init__()
         self.__dict__.update(kwargs)
-        logger.debug('Loger initialized')
+
+    @property
+    def _article_scraper(self):  # pragma: nocover
+        '''
+        property returns an article scraper class that will generate an article
+        it should return a class, not an instance
+        '''
 
     # TODO: add dynamic loading
     # solution should be either to use selenium or scrappy + Splash
@@ -45,49 +53,40 @@ class Scraper(ABC):
     def fetch_content(self) -> None:
         '''extracts content from a given page'''
 
-        logger.debug('fetching content from the page')
         self.page_content = get_page_content(self.base_url, self.header)
-        logger.debug('done fetching content from the page')
 
     def get_articles(self) -> List[Article]:
         '''
         function parses the list of articles extracted from the base url
         and returns the list of Article objects
         '''
-        logger.debug('Retrieving article information')
         raw_articles = self._get_search_results()
 
         article_list = []
-        for article in tqdm(raw_articles[:min(self.num_articles, len(raw_articles))]):
-            article_title, article_content = self._extract_article_information(
-                article)
-            article_list.append(
-                Article(article_title, article_content, self.site_name)
-            )
+        for raw_article in tqdm(raw_articles[:min(self.num_articles, len(raw_articles))]):
+            scraped_article = self._extract_article(raw_article)
+            article_list.append(scraped_article)
 
-        logger.debug('Done retrieving article information')
         return article_list
+
+    def _extract_article(self, element: bs4.element.Tag) -> Article:
+        '''extracts article information'''
+        link = self._get_article_link(element)
+
+        article_scraper = self._article_scraper(
+            link=link,
+            site=self.site_name,
+            header=self.header,
+        )  # type: ignore
+
+        article_scraper.get_page_content()
+
+        return article_scraper.get_article
 
     @abstractmethod
     def _get_search_results(self) -> List[bs4.element.Tag]:  # pragma: nocover
-        pass
-
-    def _extract_article_information(self, element: bs4.element.Tag) -> Tuple[str, str]:
-        '''extracts article information'''
-        title = self._get_title(element)
-        link = self._get_article_link(element)
-        article_text = self._get_article_text(link)
-
-        return title, article_text
-
-    @abstractmethod
-    def _get_title(self, element: bs4.element.Tag) -> str:  # pragma: nocover
-        pass
+        '''required to get a list of raw results'''
 
     @abstractmethod
     def _get_article_link(self, element: bs4.element.Tag) -> str:  # pragma: nocover
-        pass
-
-    @abstractmethod
-    def _get_article_text(self, link: str) -> str:  # pragma: nocover
-        pass
+        '''required to get a link to the article'''

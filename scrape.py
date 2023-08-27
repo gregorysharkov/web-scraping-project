@@ -5,7 +5,7 @@ from typing import Any, Dict
 import yaml
 
 import src.constants as cn
-from src.scraper.eton_scraper import EtonScraper  # type: ignore
+from src.scraper.eton_scraper import EtonScraper
 from src.scraper.reuters_scraper import ReutersScraper
 
 
@@ -41,7 +41,7 @@ def scrape_reuters(settings: Dict) -> None:
 def load_settings(path: Path) -> Dict[str, Any]:
     '''function loads all settings from the configuration yml'''
 
-    with open(path, 'r') as file:
+    with open(path, 'r', encoding='utf8') as file:
         settings_dict = yaml.safe_load(file)
 
     return settings_dict
