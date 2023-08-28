@@ -37,18 +37,26 @@ Scraper is an abstract class that has 2 public interfaces:
 
 This setup alows further extention by adding new scrapers in future as well a possibility to address the problem of dynamic content in future by overriding the fetch method (using `selenium` package for example).
 
-The `get_article` method follows the following logic:
+The `get_articles` method iterates over search results and instantiates `Articles` using `ArticleScrapers`. Each ArticleScraper is responsible for fetching results from a URL provided by `scraper` class and alows
 1. get the title
-2. get the article url
-3. get the article content using the article url
+2. get the article content using the article url
 
-Scraper settings are located in 2 setting files:
-* `eton_constants.py`
-* `reuters_constants.py`
+All scraper settings are located in `/conf/` folder in a separate yml file
 
-The main script is located in `src/scrape.py`, all output files are stored in the `scraped_data` folder.
+
+## Setup and execution
+1. Clone repository
+2. Install dependencies
+```bash
+git clone https://github.com/gregorysharkov/web-scraping-project.git
+pip install -r requirements.txt
+```
+The main script is located in `scrape.py`, all output files are stored in the `scraped_data` folder.
+```bash
+python scrape.py
+```
 
 ## Further improvements
-* add unit tests
+* ~~add unit tests~~
 * address dynamic content feature
 * add support for parallel processing
