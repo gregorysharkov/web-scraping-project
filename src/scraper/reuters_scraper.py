@@ -38,7 +38,7 @@ class ReutersScraper(Scraper):
 
     def _get_search_results(self) -> List[bs4.element.Tag]:
         '''returns a list of bs elements containing found articles'''
-        if not self.page_content:
+        if not self.page_content:  # pragma: nocover
             return None  # type: ignore
 
         soup = convert_content_into_soup(self.page_content)

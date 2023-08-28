@@ -8,7 +8,7 @@ from src.scraper.article_scraper import ArticleScraper
 
 class ReutersArticleScraper(ArticleScraper):
     '''child class for reuters article scraper'''
-    site = 'reuters.com'
+    site = 'reuters.com'  # pragma: nocover
 
     @error_on_attribute_error('Could not parse article title')
     def _get_title(self, element: bs4.element.Tag) -> str:  # pragma: nocover

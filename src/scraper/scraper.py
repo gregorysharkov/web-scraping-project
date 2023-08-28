@@ -6,8 +6,8 @@ from typing import Any, Dict, List
 import bs4
 from tqdm import tqdm
 
+import src.request_utils as ru
 from src.article import Article
-from src.request_utils import get_page_content
 
 
 class Scraper(ABC):
@@ -53,7 +53,7 @@ class Scraper(ABC):
     def fetch_content(self) -> None:
         '''extracts content from a given page'''
 
-        self.page_content = get_page_content(self.base_url, self.header)
+        self.page_content = ru.get_page_content(self.base_url, self.header)
 
     def get_articles(self) -> List[Article]:
         '''

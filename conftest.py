@@ -1,6 +1,5 @@
 # pylint: disable=C0114, W0613, C0116, C0115
 from pathlib import Path
-from unittest.mock import MagicMock, patch
 
 import pytest
 import requests
@@ -45,41 +44,8 @@ def temp_folder() -> Path:
 
 
 @pytest.fixture
-def mock_get_page_content(monkeypatch):
-    # Mocking get_page_content using monkeypatch
-    def mock_get_content(url, header):
+def mock_get_content():
+    def mock_func(url, link):
         return b'Mocked page content'
 
-    monkeypatch.setattr("src.get_page_content", mock_get_content)
-
-
-@pytest.fixture
-def mock_eton_get_page_content(monkeypatch):
-    def eaton_mock_get_content(url, header):
-        # Mock article page content
-        article_page_content = '''
-        <div class="root responsivegrid">
-            <div class="aem-Grid aem-Grid--12 aem-Grid--default--12">
-                <div class="responsivegrid aem-GridColumn aem-GridColumn--default--12">
-                    Article content goes here.
-                </div>
-            </div>
-        </div>
-        '''
-        return article_page_content.encode('utf-8')
-
-    monkeypatch.setattr(
-        "src.get_page_content", eaton_mock_get_content)
-
-
-@pytest.fixture
-def mock_article_content():
-    return '''
-        <div class="root responsivegrid">
-            <div class="aem-Grid aem-Grid--12 aem-Grid--default--12">
-                <div class="responsivegrid aem-GridColumn aem-GridColumn--default--12">
-                    Mocked page content
-                </div>
-            </div>
-        </div>
-        '''
+    return mock_func
