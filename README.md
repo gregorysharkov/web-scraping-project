@@ -69,14 +69,14 @@ rootdir: C:\Users\grego\Documents\upwork\006_data_scraping
 plugins: cov-4.1.0, requests-mock-1.11.0
 collected 18 items
 
-test\test_article.py ...                                                                                                                                                                                                                                      [ 16%] 
-test\test_article_scraper.py ...                                                                                                                                                                                                                              [ 33%] 
-test\test_article_scraper_reuters.py .                                                                                                                                                                                                                        [ 38%]
-test\test_eton_scraper.py ..                                                                                                                                                                                                                                  [ 50%] 
-test\test_page_content.py ...                                                                                                                                                                                                                                 [ 66%]
-test\test_parsing_utils.py .                                                                                                                                                                                                                                  [ 72%]
-test\test_reuters_scraper.py ..                                                                                                                                                                                                                               [ 83%] 
-test\test_scraper.py ...                                                                                                                                                                                                                                      [100%]
+test\test_article.py ...                              [ 16%] 
+test\test_article_scraper.py ...                      [ 33%] 
+test\test_article_scraper_reuters.py .                [ 38%]
+test\test_eton_scraper.py ..                          [ 50%] 
+test\test_page_content.py ...                         [ 66%]
+test\test_parsing_utils.py .                          [ 72%]
+test\test_reuters_scraper.py ..                       [ 83%] 
+test\test_scraper.py ...                              [100%]
 
 ---------- coverage: platform win32, python 3.11.4-final-0 -----------
 Name                                     Stmts   Miss  Cover   Missing
