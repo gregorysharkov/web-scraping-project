@@ -56,6 +56,50 @@ The main script is located in `scrape.py`, all output files are stored in the `s
 python scrape.py
 ```
 
+if you want to test:
+```bash
+pytest --cov=src/ --cov-report=term-missing
+```
+
+this should produce the following output:
+```bash
+======================== test session starts =================
+platform win32 -- Python 3.11.4, pytest-7.4.0, pluggy-1.2.0
+rootdir: C:\Users\grego\Documents\upwork\006_data_scraping
+plugins: cov-4.1.0, requests-mock-1.11.0
+collected 18 items
+
+test\test_article.py ...                                                                                                                                                                                                                                      [ 16%] 
+test\test_article_scraper.py ...                                                                                                                                                                                                                              [ 33%] 
+test\test_article_scraper_reuters.py .                                                                                                                                                                                                                        [ 38%]
+test\test_eton_scraper.py ..                                                                                                                                                                                                                                  [ 50%] 
+test\test_page_content.py ...                                                                                                                                                                                                                                 [ 66%]
+test\test_parsing_utils.py .                                                                                                                                                                                                                                  [ 72%]
+test\test_reuters_scraper.py ..                                                                                                                                                                                                                               [ 83%] 
+test\test_scraper.py ...                                                                                                                                                                                                                                      [100%]
+
+---------- coverage: platform win32, python 3.11.4-final-0 -----------
+Name                                     Stmts   Miss  Cover   Missing
+----------------------------------------------------------------------
+src\__init__.py                              1      0   100%
+src\article.py                              15      0   100%
+src\constants.py                             0      0   100%
+src\parsing_utils.py                        10      0   100%
+src\request_utils.py                         8      0   100%
+src\scraper\__init__.py                      0      0   100%
+src\scraper\article_scraper.py              24      0   100%
+src\scraper\article_scraper_eton.py          7      0   100%
+src\scraper\article_scraper_reuters.py       5      0   100%
+src\scraper\eton_scraper.py                 18      0   100%
+src\scraper\reuters_scraper.py              35      0   100%
+src\scraper\scraper.py                      33      0   100%
+----------------------------------------------------------------------
+TOTAL                                      156      0   100%
+
+
+=========================== 18 passed in 0.29s ====================================
+```
+
 ## Further improvements
 * ~~add unit tests~~
 * address dynamic content feature
